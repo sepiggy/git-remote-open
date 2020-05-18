@@ -10,16 +10,20 @@ import (
 func main() {
 	if _, err := os.Stat(".git"); err != nil && os.IsNotExist(err) {
 		fmt.Println("fatal: not a git repository")
+		return
 	}
+
 	cmd := exec.Command("git", "remote", "-v")
 	var bs []byte
 	bs, err := cmd.Output()
 	if err != nil {
 		fmt.Println("fatal: command output failed")
+		return
 	}
 
 	if len(bs) == 0 {
 		fmt.Println("fatal: not a remote repository")
+		return
 	}
 
 	ss := strings.Split(string(bs), "\n")
