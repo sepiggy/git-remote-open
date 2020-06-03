@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 	"os/exec"
+	"runtime"
 	"strings"
 )
 
@@ -30,6 +31,10 @@ func main() {
 	i1 := strings.Index(ss[0], "http")
 	i2 := strings.Index(ss[0], ".git")
 	url := ss[0][i1 : i2+4]
-	cmd = exec.Command("open", url)
+	if runtime.GOOS == "darwin" {
+		cmd = exec.Command("open", url)
+	} else if runtime.GOOS == "linux" {
+		cmd = exec.Command("xdg-open", url)
+	}
 	cmd.Run()
 }
